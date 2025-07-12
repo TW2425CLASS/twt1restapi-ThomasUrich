@@ -15,8 +15,7 @@ app.use('/cursos', require('./routes/cursoRoutes'));
 
 // Conexão ao MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+
 })
 .then(() => {
   console.log('🟢 Conectado ao MongoDB Atlas');
