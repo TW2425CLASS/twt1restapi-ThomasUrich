@@ -33,7 +33,6 @@ Este projeto é uma aplicação web completa que permite cadastrar, listar, edit
 ### Swagger
 
 - Documentação acessível na rota `/api-docs`
-- 
 ---
 
 ## Como Rodar Localmente
