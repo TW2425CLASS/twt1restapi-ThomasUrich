@@ -44,7 +44,7 @@
   </form>
 
   <script>
-    const API_URL = 'https://api-alunos.onrender.com/alunos';
+    const API_URL = 'https://twt1restapi-thomasurich.onrender.com/alunos';
     const tabela = document.getElementById('aluno-tabela');
     const form = document.getElementById('form-aluno');
     const cancelarBtn = document.getElementById('cancelar-edicao');
@@ -72,7 +72,8 @@
       });
     }
     async function carregarCursos() {
-     const res = await fetch('https://api-alunos.onrender.com/cursos');
+     const res ='https://twt1restapi-thomasurich.onrender.com/cursos';
+
 
      const cursos = await res.json();
      const select = document.getElementById('curso');
