@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const cursoSchema = new mongoose.Schema({
-  nomeDoCurso: String
+  nome: { type: String, required: true }
 });
 
 module.exports = mongoose.model('Curso', cursoSchema);
