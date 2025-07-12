@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "36aa9dad-5a54-402f-88b2-6458f91823cd",
+		"name": "Listar Alunos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46048099"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/alunos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/alunos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

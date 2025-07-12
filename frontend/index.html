@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestão de Alunos</title>
+  <style>
+    body { font-family: Arial; margin: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.5rem; border: 1px solid #ccc; text-align: left; }
+    form { margin-top: 2rem; }
+    input { margin: 0.3rem; padding: 0.4rem; }
+    button { margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Gestão de Alunos</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Apelido</th>
+        <th>Curso</th>
+        <th>Ano</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="aluno-tabela">
+      <!-- Alunos renderizados aqui -->
+    </tbody>
+  </table>
+
+  <form id="form-aluno">
+    <h3 id="form-titulo">Adicionar Aluno</h3>
+    <input type="text" id="nome" placeholder="Nome" required />
+    <input type="text" id="apelido" placeholder="Apelido" required />
+        <select id="curso" required>
+            <option value="">-- Selecione um curso --</option>
+        </select>
+    <input type="number" id="anoCurricular" placeholder="Ano" required />
+    <button type="submit">Salvar</button>
+    <button type="button" id="cancelar-edicao" style="display:none;">Cancelar</button>
+  </form>
+
+  <script>
+    const API_URL = 'http://localhost:3000/alunos';
+    const tabela = document.getElementById('aluno-tabela');
+    const form = document.getElementById('form-aluno');
+    const cancelarBtn = document.getElementById('cancelar-edicao');
+
+    let alunoEmEdicao = null;
+
+    // Carregar alunos
+    async function carregarAlunos() {
+      const res = await fetch(API_URL);
+      const alunos = await res.json();
+      tabela.innerHTML = '';
+      alunos.forEach(aluno => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${aluno.nome}</td>
+          <td>${aluno.apelido}</td>
+          <td>${aluno.curso}</td>
+          <td>${aluno.anoCurricular}</td>
+          <td>
+            <button onclick="editarAluno(${aluno.id})">Editar</button>
+            <button onclick="apagarAluno(${aluno.id})">Apagar</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+    async function carregarCursos() {
+     const res = await fetch('http://localhost:3000/cursos');
+     const cursos = await res.json();
+     const select = document.getElementById('curso');
+     select.innerHTML = '<option value="">-- Selecione um curso --</option>'; // resetar
+
+     cursos.forEach(curso => {
+     const opt = document.createElement('option');
+        opt.value = curso.nomeDoCurso;
+        opt.textContent = curso.nomeDoCurso;
+        select.appendChild(opt);
+         });
+    }
+    // Adicionar ou Editar aluno
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const aluno = {
+        nome: document.getElementById('nome').value,
+        apelido: document.getElementById('apelido').value,
+        curso: document.getElementById('curso').value,
+        anoCurricular: Number(document.getElementById('anoCurricular').value)
+      };
+
+      if (alunoEmEdicao) {
+        await fetch(`${API_URL}/${alunoEmEdicao}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
+        });
+        alunoEmEdicao = null;
+        document.getElementById('form-titulo').innerText = 'Adicionar Aluno';
+        cancelarBtn.style.display = 'none';
+      } else {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
+        });
+      }
+      form.reset();
+      carregarAlunos();
+    };
+
+    // Carregar dados para editar
+    async function editarAluno(id) {
+      const res = await fetch(`${API_URL}/${id}`);
+      const aluno = await res.json();
+      document.getElementById('nome').value = aluno.nome;
+      document.getElementById('apelido').value = aluno.apelido;
+      document.getElementById('curso').value = aluno.curso;
+      document.getElementById('anoCurricular').value = aluno.anoCurricular;
+      alunoEmEdicao = id;
+      document.getElementById('form-titulo').innerText = 'Editar Aluno';
+      cancelarBtn.style.display = 'inline';
+    }
+
+    // Apagar aluno
+    async function apagarAluno(id) {
+      if (confirm('Deseja realmente apagar este aluno?')) {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        carregarAlunos();
+      }
+    }
+
+    // Cancelar edição
+    cancelarBtn.onclick = () => {
+      alunoEmEdicao = null;
+      form.reset();
+      document.getElementById('form-titulo').innerText = 'Adicionar Aluno';
+      cancelarBtn.style.display = 'none';
+    };
+
+    // Iniciar
+    carregarAlunos();
+    carregarCursos();
+  </script>
+</body>
+</html>
