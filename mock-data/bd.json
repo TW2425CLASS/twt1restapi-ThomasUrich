@@ -1,26 +1,6 @@
 {
   "alunos": [
-    {
-      "id": 2,
-      "nome": "Miguel",
-      "apelido": "Santos",
-      "curso": "Engenharia Eletrotécnica",
-      "anoCurricular": 3
-    },
-    {
-      "id": 3,
-      "nome": "Carla",
-      "apelido": "Ferreira",
-      "curso": "Gestão",
-      "anoCurricular": 1
-    },
-    {
-      "nome": "Thomás",
-      "apelido": "Urich",
-      "curso": "Gestao",
-      "anoCurricular": 1,
-      "id": 4
-    }
+ 
   ],
   "cursos": [
     {
