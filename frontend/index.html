@@ -71,21 +71,25 @@
         tabela.appendChild(tr);
       });
     }
-    async function carregarCursos() {
-     const res ='https://twt1restapi-thomasurich.onrender.com/cursos';
+   async function carregarCursos() {
+  try {
+    const res = await fetch('https://twt1restapi-thomasurich.onrender.com/cursos');
+    const cursos = await res.json();
 
+    const select = document.getElementById('curso');
+    select.innerHTML = '<option value="">-- Selecione um curso --</option>';
 
-     const cursos = await res.json();
-     const select = document.getElementById('curso');
-     select.innerHTML = '<option value="">-- Selecione um curso --</option>'; // resetar
+    cursos.forEach(curso => {
+      const option = document.createElement('option');
+      option.value = curso.nome;
+      option.textContent = curso.nome;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Erro ao carregar cursos:', error);
+  }
+}
 
-     cursos.forEach(curso => {
-     const opt = document.createElement('option');
-        option.value = curso.nome;
-        option.textContent = curso.nome;
-        select.appendChild(opt);
-         });
-    }
     // Adicionar ou Editar aluno
     form.onsubmit = async (e) => {
       e.preventDefault();
