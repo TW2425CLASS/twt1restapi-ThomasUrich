@@ -1,0 +1,3 @@
+- [Aplicação completa (Frontend + Backend)](https://twt1restapi-thomas-urich-rivv.vercel.app/)
+- [API REST de Alunos](https://twt1restapi-thomasurich.onrender.com/alunos)
+- [API REST de Cursos](https://twt1restapi-thomasurich.onrender.com/cursos)
