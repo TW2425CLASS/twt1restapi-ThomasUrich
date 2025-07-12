@@ -64,8 +64,8 @@
           <td>${aluno.curso}</td>
           <td>${aluno.anoCurricular}</td>
           <td>
-            <button onclick="editarAluno(${aluno.id})">Editar</button>
-            <button onclick="apagarAluno(${aluno.id})">Apagar</button>
+            <button onclick="editarAluno('${aluno._id}')">Editar</button>
+            <button onclick="apagarAluno('${aluno._id}')">Apagar</button>
           </td>
         `;
         tabela.appendChild(tr);
