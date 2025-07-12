@@ -72,7 +72,8 @@
       });
     }
     async function carregarCursos() {
-     const res = await fetch('http://localhost:3000/cursos');
+     const res = await fetch('https://api-alunos.onrender.com/cursos');
+
      const cursos = await res.json();
      const select = document.getElementById('curso');
      select.innerHTML = '<option value="">-- Selecione um curso --</option>'; // resetar
