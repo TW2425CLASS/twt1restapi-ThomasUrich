@@ -23,6 +23,27 @@ router.get('/', alunoCtrl.getAlunos);
 
 /**
  * @swagger
+ * /alunos/{id}:
+ *   get:
+ *     summary: Retorna um aluno específico pelo ID
+ *     tags: [Alunos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do aluno
+ *     responses:
+ *       200:
+ *         description: Dados do aluno
+ *       404:
+ *         description: Aluno não encontrado
+ */
+router.get('/:id', alunoCtrl.getAlunoPorId);
+
+/**
+ * @swagger
  * /alunos:
  *   post:
  *     summary: Cria um novo aluno
@@ -65,6 +86,7 @@ router.post('/', alunoCtrl.createAluno);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID do aluno
  *     requestBody:
  *       required: true
  *       content:
@@ -83,6 +105,8 @@ router.post('/', alunoCtrl.createAluno);
  *     responses:
  *       200:
  *         description: Aluno atualizado com sucesso
+ *       404:
+ *         description: Aluno não encontrado
  */
 router.put('/:id', alunoCtrl.updateAluno);
 
@@ -98,9 +122,12 @@ router.put('/:id', alunoCtrl.updateAluno);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID do aluno
  *     responses:
- *       200:
+ *       204:
  *         description: Aluno removido com sucesso
+ *       404:
+ *         description: Aluno não encontrado
  */
 router.delete('/:id', alunoCtrl.deleteAluno);
 

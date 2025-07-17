@@ -122,6 +122,7 @@
 
     // Carregar dados para editar
     async function editarAluno(id) {
+      console.log(id);
       const res = await fetch(`${API_URL}/${id}`);
       const aluno = await res.json();
       document.getElementById('nome').value = aluno.nome;
