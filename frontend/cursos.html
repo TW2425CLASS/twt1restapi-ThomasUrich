@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestão de Cursos</title>
+  <style>
+    body { font-family: Arial; margin: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.5rem; border: 1px solid #ccc; text-align: left; }
+    form { margin-top: 2rem; }
+    input { margin: 0.3rem; padding: 0.4rem; }
+    button { margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Gestão de Cursos</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="curso-tabela">
+      <!-- Cursos renderizados aqui -->
+    </tbody>
+  </table>
+
+  <form id="form-curso">
+    <h3 id="form-titulo">Adicionar Curso</h3>
+    <input type="text" id="nome" placeholder="Nome do Curso" required />
+    <button type="submit">Salvar</button>
+    <button type="button" id="cancelar-edicao" style="display:none;">Cancelar</button>
+  </form>
+
+  <script>
+    const API_URL = 'https://twt1restapi-thomasurich.onrender.com/cursos';
+    const tabela = document.getElementById('curso-tabela');
+    const form = document.getElementById('form-curso');
+    const cancelarBtn = document.getElementById('cancelar-edicao');
+
+    let cursoEmEdicao = null;
+
+    // Carregar cursos
+    async function carregarCursos() {
+      const res = await fetch(API_URL);
+      const cursos = await res.json();
+      tabela.innerHTML = '';
+      cursos.forEach(curso => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${curso.nome}</td>
+          <td>
+            <button onclick="editarCurso('${curso._id}')">Editar</button>
+            <button onclick="apagarCurso('${curso._id}')">Apagar</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    // Adicionar ou Editar curso
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const curso = {
+        nome: document.getElementById('nome').value
+      };
+
+      if (cursoEmEdicao) {
+        await fetch(`${API_URL}/${cursoEmEdicao}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(curso)
+        });
+        cursoEmEdicao = null;
+        document.getElementById('form-titulo').innerText = 'Adicionar Curso';
+        cancelarBtn.style.display = 'none';
+      } else {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(curso)
+        });
+      }
+
+      form.reset();
+      carregarCursos();
+    };
+
+    // Carregar dados para editar
+    async function editarCurso(id) {
+      const res = await fetch(`${API_URL}/${id}`);
+      const curso = await res.json();
+      document.getElementById('nome').value = curso.nome;
+      cursoEmEdicao = id;
+      document.getElementById('form-titulo').innerText = 'Editar Curso';
+      cancelarBtn.style.display = 'inline';
+    }
+
+    // Apagar curso
+    async function apagarCurso(id) {
+      if (confirm('Deseja realmente apagar este curso?')) {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        carregarCursos();
+      }
+    }
+
+    // Cancelar edição
+    cancelarBtn.onclick = () => {
+      cursoEmEdicao = null;
+      form.reset();
+      document.getElementById('form-titulo').innerText = 'Adicionar Curso';
+      cancelarBtn.style.display = 'none';
+    };
+
+    // Iniciar
+    carregarCursos();
+  </script>
+</body>
+</html>
