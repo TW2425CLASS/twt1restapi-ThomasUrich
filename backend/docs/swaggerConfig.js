@@ -15,7 +15,7 @@ const options = {
       },
     ],
   },
-  apis: ['./backend/routes/*.js'], // caminho onde os endpoints estão
+  apis: [__dirname + '/../routes/*.js']
 };
 
 const swaggerSpec = swaggerJSDoc(options);
