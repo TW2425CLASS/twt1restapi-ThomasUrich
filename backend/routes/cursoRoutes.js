@@ -89,4 +89,26 @@ router.put('/:id', cursoCtrl.updateCurso);
  */
 router.delete('/:id', cursoCtrl.deleteCurso);
 
+/**
+ * @swagger
+ * /cursos/{id}:
+ *   get:
+ *     summary: Retorna um curso específico pelo ID
+ *     tags: [Cursos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do curso
+ *     responses:
+ *       200:
+ *         description: Dados do curso
+ *       404:
+ *         description: Curso não encontrado
+ */
+router.get('/:id', cursoCtrl.getCursoPorId);
+
+
 module.exports = router;

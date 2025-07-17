@@ -24,3 +24,15 @@ exports.deleteCurso = async (req, res) => {
   await Curso.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
+exports.getCursoPorId = async (req, res) => {
+  try {
+    const curso = await Curso.findById(req.params.id);
+    if (!curso) {
+      return res.status(404).json({ erro: 'Curso não encontrado' });
+    }
+    res.json(curso);
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao buscar curso' });
+  }
+};
